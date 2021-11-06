@@ -18,7 +18,7 @@ export abstract class RiftCommand extends Command {
         return null
     }
 
-    public abstract interact(interaction: CommandInteraction, options: Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'>): Awaitable<unknown>
+    public abstract interact(interaction: CommandInteraction<'cached'>, options: Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'>): Awaitable<unknown>
 
     public getCommandData(): ApplicationCommandData {
 		return {

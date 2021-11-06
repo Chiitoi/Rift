@@ -6,12 +6,12 @@ import type { ApplicationCommandData, ApplicationCommandOption, ApplicationComma
 
 declare module 'discord.js' {
 	interface ClientEvents {
-		[EVENTS.INTERACTION_DENIED]: [error: UserError, interaction: CommandInteraction]
-		[EVENTS.INTERACTION_ERROR]: [error: Error, interaction: CommandInteraction]
-		[EVENTS.INTERACTION_FINISH]: [interaction: CommandInteraction]
-		[EVENTS.INTERACTION_RUN]: [interaction: CommandInteraction, options: Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'>]
-		[EVENTS.INTERACTION_SUCCESS]: [interaction: CommandInteraction, result: Awaitable<unknown>]
-		[EVENTS.UNKNOWN_INTERACTION]: [interaction: CommandInteraction]
+		[EVENTS.INTERACTION_DENIED]: [error: UserError, interaction: CommandInteraction<'cached'>]
+		[EVENTS.INTERACTION_ERROR]: [error: Error, interaction: CommandInteraction<'cached'>]
+		[EVENTS.INTERACTION_FINISH]: [interaction: CommandInteraction<'cached'>]
+		[EVENTS.INTERACTION_RUN]: [interaction: CommandInteraction<'cached'>, options: Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'>]
+		[EVENTS.INTERACTION_SUCCESS]: [interaction: CommandInteraction<'cached'>, result: Awaitable<unknown>]
+		[EVENTS.UNKNOWN_INTERACTION]: [interaction: CommandInteraction<'cached'>]
 	}
 }
 
@@ -20,7 +20,7 @@ declare module '@sapphire/framework' {
 		defaultPermission?: boolean
 		parameters?: ApplicationCommandOptionData[]
 		type: ApplicationCommandTypes
-		interact(interaction: CommandInteraction, options: Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'>): Awaitable<unknown>
+		interact(interaction: CommandInteraction<'cached'>, options: Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'>): Awaitable<unknown>
 		getCommandData(): ApplicationCommandData
 	}
 }

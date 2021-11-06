@@ -21,13 +21,6 @@ export class RiftListener extends Listener {
 			return
         if (interaction.user.bot)
             return
-        if (!channel.permissionsFor(me).has(this.minimumPermissions)) {
-            const missingPermissions = channel.permissionsFor(me).missing(this.minimumPermissions).map(permission => `\`${ permission}\``)
-            // @ts-expect-error
-            const message = `I am missing the ${ new Intl.ListFormat().format(missingPermissions) } ${ missingPermissions.length === 1 ? 'permission': 'permissions' } in order to run this command.`
-            client.emit(EVENTS.INTERACTION_DENIED, new UserError({ identifier: 'ClientPermissions', message }), interaction)
-            return
-        }
 
         const { settings, stores } = this.container
         const { commandName } = interaction
@@ -43,8 +36,17 @@ export class RiftListener extends Listener {
             client.emit(EVENTS.INTERACTION_ERROR, new Error(`Please kick and reinvite ${ client.user.username }.`), interaction)
             return
         }
+        if (!channel.permissionsFor(me).has(this.minimumPermissions)) {
+            const missingPermissions = channel.permissionsFor(me).missing(this.minimumPermissions).map(permission => `\`${ permission}\``)
+            // @ts-expect-error
+            const message = `I am missing the ${ new Intl.ListFormat().format(missingPermissions) } ${ missingPermissions.length === 1 ? 'permission': 'permissions' } in order to run this command.`
+            client.emit(EVENTS.INTERACTION_DENIED, new UserError({ identifier: 'ClientPermissions', message }), interaction)
+            return
+        }
+
+
         if (!interaction.member.permissions.has('ADMINISTRATOR')) {
-            client.emit(EVENTS.INTERACTION_DENIED, new UserError({ identifier: 'UserPermissions', message: 'Only administrators may run commands with ${ client.user.username }.' }), interaction)
+            client.emit(EVENTS.INTERACTION_DENIED, new UserError({ identifier: 'UserPermissions', message: `Only administrators may run commands with ${ client.user.username }.` }), interaction)
             return
         }
 
